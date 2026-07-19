@@ -1,0 +1,34 @@
+.card {
+  min-width: 0;
+}
+
+.openButton {
+  background: transparent;
+  border: 0;
+  display: block;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.openButton:active {
+  transform: translateY(1px);
+}
+
+.caption {
+  display: block;
+  padding: 11px 2px 0;
+}
+
+.caption h2 {
+  display: -webkit-box;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  margin: 0 0 5px;
+  min-height: 2.8em;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

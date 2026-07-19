@@ -1,0 +1,63 @@
+.topBar {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding-bottom: 22px;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.addButton {
+  border-radius: 6px;
+  height: 44px;
+}
+
+.addButton {
+  background: var(--color-text);
+  border: 1px solid var(--color-text);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 18px;
+}
+
+.addButton:hover {
+  background: #333330;
+  border-color: #333330;
+}
+
+.addButton:active {
+  transform: scale(0.985);
+}
+
+@media (max-width: 980px) {
+  .topBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 560px) {
+  .actions {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .addButton:active {
+    transform: none;
+  }
+}

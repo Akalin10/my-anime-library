@@ -1,0 +1,39 @@
+.frame {
+  aspect-ratio: 2 / 3;
+  background: #ece8e0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.frame img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 180ms ease;
+  width: 100%;
+}
+
+.hoverMask {
+  background: rgba(28, 28, 26, 0.05);
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 180ms ease;
+}
+
+:global(article:hover) .frame img {
+  transform: scale(1.015);
+}
+
+:global(article:hover) .hoverMask {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame img,
+  .hoverMask {
+    transition: none;
+  }
+}

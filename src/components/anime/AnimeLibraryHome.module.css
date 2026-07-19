@@ -1,0 +1,87 @@
+.shell {
+  min-height: 100dvh;
+}
+
+.application {
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.main {
+  margin: 0 auto;
+  max-width: 1500px;
+  padding: 42px clamp(32px, 4.5vw, 72px) 88px;
+  width: 100%;
+}
+
+.filterRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 18px 0 30px;
+}
+
+.resultCount {
+  color: var(--color-text-subtle);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.content {
+  min-height: 420px;
+}
+
+.message {
+  color: var(--color-text-secondary);
+  padding: 100px 0;
+  text-align: center;
+}
+
+.error {
+  color: var(--color-text-secondary);
+  padding: 92px 0;
+  text-align: center;
+}
+
+.error p {
+  margin: 0 0 16px;
+}
+
+.error button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .application {
+    grid-template-columns: 184px minmax(0, 1fr);
+  }
+
+  .main {
+    padding: 34px 24px 68px;
+  }
+}
+
+@media (max-width: 760px) {
+  .application {
+    display: block;
+  }
+
+  .main {
+    padding: 28px 20px 60px;
+  }
+}
+
+@media (max-width: 560px) {
+  .main {
+    padding: 24px 14px 48px;
+  }
+
+  .filterRow {
+    margin-bottom: 24px;
+  }
+}

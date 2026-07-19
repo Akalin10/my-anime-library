@@ -1,0 +1,51 @@
+{
+  "name": "my-anime-library",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "dev": "cross-env NEXT_TEST_WASM_DIR=./node_modules/@next/swc-wasm-nodejs next dev --webpack",
+    "build": "npm run typecheck && cross-env NEXT_TEST_WASM_DIR=./node_modules/@next/swc-wasm-nodejs next build --webpack",
+    "start": "cross-env NEXT_TEST_WASM_DIR=./node_modules/@next/swc-wasm-nodejs next start",
+    "lint": "eslint .",
+    "typecheck": "cross-env NEXT_TEST_WASM_DIR=./node_modules/@next/swc-wasm-nodejs next typegen && tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:check": "drizzle-kit check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e:prepare": "node tests/e2e/prepare.mjs",
+    "test:e2e": "npm run build && node tests/e2e/run.mjs"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource-variable/noto-sans-sc": "^5.3.0",
+    "@fontsource-variable/noto-serif-sc": "^5.3.0",
+    "@tanstack/react-query": "^5.101.2",
+    "better-sqlite3": "^12.11.1",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "next": "^16.2.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@next/swc-wasm-nodejs": "^16.2.10",
+    "@playwright/test": "^1.61.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "axe-core": "^4.12.1",
+    "cross-env": "^10.1.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
+    "jsdom": "^29.1.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "data": {
+    "Media": {
+      "relations": {
+        "edges": [
+          {
+            "relationType": "SIDE_STORY",
+            "node": {
+              "id": 5,
+              "idMal": 5,
+              "type": "ANIME",
+              "title": {
+                "romaji": "Cowboy Bebop: Tengoku no Tobira",
+                "english": "Cowboy Bebop: The Movie - Knockin' on Heaven's Door",
+                "native": "カウボーイビバップ天国の扉"
+              },
+              "release": { "year": 2001 },
+              "format": "MOVIE",
+              "coverImage": {
+                "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5-NozHwXWdNLCz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg",
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg"
+              }
+            }
+          },
+          {
+            "relationType": "ADAPTATION",
+            "node": {
+              "id": 30173,
+              "idMal": 173,
+              "type": "MANGA",
+              "title": {
+                "romaji": "Cowboy Bebop",
+                "english": "Cowboy Bebop",
+                "native": "カウボーイビバップ"
+              },
+              "release": { "year": 1999 },
+              "format": "MANGA",
+              "coverImage": {
+                "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/nx30173-SU7cu3H9jLXT.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30173-SU7cu3H9jLXT.jpg",
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30173-SU7cu3H9jLXT.jpg"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

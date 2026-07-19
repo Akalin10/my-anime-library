@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" role="img" aria-label="动漫封面占位图">
+  <rect width="400" height="600" fill="#ECE8E0"/>
+  <rect x="124" y="174" width="152" height="228" rx="10" fill="#F7F5F0" stroke="#CFC9BF" stroke-width="2"/>
+  <path d="M162 272h76M162 300h76M162 328h48" fill="none" stroke="#AAA49A" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="200" cy="230" r="18" fill="#D8CEC4"/>
+</svg>

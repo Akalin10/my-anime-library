@@ -1,0 +1,104 @@
+.bar {
+  background: #f1eee8;
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 26px 24px;
+}
+
+.summary {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.summary strong {
+  font-size: 15px;
+}
+
+.summary button {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  min-height: 44px;
+  padding: 5px 0;
+}
+
+.summary button:disabled {
+  opacity: 0.45;
+}
+
+.globalStatus {
+  display: grid;
+  gap: 8px;
+}
+
+.globalStatus span {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.globalStatus select {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  min-height: 44px;
+  padding: 0 12px;
+}
+
+.importButton {
+  background: var(--color-text);
+  border: 1px solid var(--color-text);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.importButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.importButton:hover:not(:disabled) {
+  background: #333330;
+  border-color: #333330;
+}
+
+.summary button:hover:not(:disabled) {
+  color: var(--color-text);
+}
+
+.result {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  font-size: 12px;
+  gap: 6px;
+  line-height: 1.5;
+  padding-top: 18px;
+}
+
+.result p {
+  color: #8b4534;
+  margin: 6px 0 0;
+}
+
+.requestError {
+  color: #8b4534;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 820px) {
+  .bar {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
+}

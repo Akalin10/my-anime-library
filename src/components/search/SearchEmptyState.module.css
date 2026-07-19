@@ -1,0 +1,59 @@
+.state {
+  align-items: center;
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+  padding: 54px 24px;
+  text-align: center;
+}
+
+.marker {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: block;
+  height: 54px;
+  margin-bottom: 22px;
+  position: relative;
+  width: 38px;
+}
+
+.marker::after {
+  border-bottom: 1px solid #bbb5ab;
+  border-top: 1px solid #bbb5ab;
+  content: "";
+  height: 7px;
+  left: 12px;
+  position: absolute;
+  top: 22px;
+  width: 13px;
+}
+
+.state h2 {
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.state p {
+  margin: 9px 0 0;
+}
+
+.state button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  margin-top: 20px;
+  min-height: 44px;
+  padding: 0 17px;
+}
+
+.state button:hover {
+  background: var(--color-hover);
+  border-color: #d2cdc4;
+}

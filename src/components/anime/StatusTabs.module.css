@@ -1,0 +1,40 @@
+.tabs {
+  display: flex;
+  gap: 28px;
+  min-width: 0;
+}
+
+.tab {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  min-height: 44px;
+  padding: 0;
+  position: relative;
+}
+
+.tab::after {
+  background: transparent;
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.tab:hover,
+.tab[data-active="true"] {
+  color: var(--color-text);
+}
+
+.tab[data-active="true"]::after {
+  background: var(--color-text);
+}
+
+@media (max-width: 420px) {
+  .tabs {
+    gap: 20px;
+  }
+}

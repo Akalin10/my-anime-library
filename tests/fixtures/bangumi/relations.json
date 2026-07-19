@@ -1,0 +1,44 @@
+[
+  {
+    "id": 310656,
+    "type": 2,
+    "name": "「進撃の巨人」〜クロニクル〜",
+    "name_cn": "进击的巨人 编年史",
+    "images": {
+      "small": "https://lain.bgm.tv/r/200/pic/cover/l/af/9b/310656_Lr7hk.jpg",
+      "grid": "https://lain.bgm.tv/r/100/pic/cover/l/af/9b/310656_Lr7hk.jpg",
+      "large": "https://lain.bgm.tv/pic/cover/l/af/9b/310656_Lr7hk.jpg",
+      "medium": "https://lain.bgm.tv/r/800/pic/cover/l/af/9b/310656_Lr7hk.jpg",
+      "common": "https://lain.bgm.tv/r/400/pic/cover/l/af/9b/310656_Lr7hk.jpg"
+    },
+    "relation": "总集篇"
+  },
+  {
+    "id": 221781,
+    "type": 2,
+    "name": "進撃の巨人 LOST GIRLS",
+    "name_cn": "进击的巨人 LOST GIRLS",
+    "images": {
+      "small": "https://lain.bgm.tv/r/200/pic/cover/l/0c/6f/221781_oL8PO.jpg",
+      "grid": "https://lain.bgm.tv/r/100/pic/cover/l/0c/6f/221781_oL8PO.jpg",
+      "large": "https://lain.bgm.tv/pic/cover/l/0c/6f/221781_oL8PO.jpg",
+      "medium": "https://lain.bgm.tv/r/800/pic/cover/l/0c/6f/221781_oL8PO.jpg",
+      "common": "https://lain.bgm.tv/r/400/pic/cover/l/0c/6f/221781_oL8PO.jpg"
+    },
+    "relation": "番外篇"
+  },
+  {
+    "id": 495007,
+    "type": 2,
+    "name": "進撃の巨人・ザ・リアル 4-D: 2.0",
+    "name_cn": "进击的巨人 THE REAL 4D: 2.0",
+    "images": {
+      "small": "https://lain.bgm.tv/r/200/pic/cover/l/1d/10/495007_FQKHQ.jpg",
+      "grid": "https://lain.bgm.tv/r/100/pic/cover/l/1d/10/495007_FQKHQ.jpg",
+      "large": "https://lain.bgm.tv/pic/cover/l/1d/10/495007_FQKHQ.jpg",
+      "medium": "https://lain.bgm.tv/r/800/pic/cover/l/1d/10/495007_FQKHQ.jpg",
+      "common": "https://lain.bgm.tv/r/400/pic/cover/l/1d/10/495007_FQKHQ.jpg"
+    },
+    "relation": "衍生"
+  }
+]

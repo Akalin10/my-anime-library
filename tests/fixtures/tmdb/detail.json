@@ -1,0 +1,18 @@
+{
+  "adult": false,
+  "backdrop_path": "/mYN6JBZ0C2v7bxUB0dD1baBGhkS.jpg",
+  "id": 129,
+  "original_language": "ja",
+  "original_title": "千と千尋の神隠し",
+  "overview": "少女千寻误入神灵世界，并努力寻找回家的方法。",
+  "poster_path": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+  "production_companies": [
+    { "id": 10342, "logo_path": null, "name": "Studio Ghibli", "origin_country": "JP" }
+  ],
+  "release_date": "2001-07-20",
+  "title": "千与千寻",
+  "external_ids": {
+    "imdb_id": "tt0245429",
+    "wikidata_id": "Q155653"
+  }
+}

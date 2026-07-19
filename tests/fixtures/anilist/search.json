@@ -1,0 +1,28 @@
+{
+  "data": {
+    "Page": {
+      "media": [
+        {
+          "id": 1,
+          "idMal": 1,
+          "title": {
+            "romaji": "Cowboy Bebop",
+            "english": "Cowboy Bebop",
+            "native": "カウボーイビバップ"
+          },
+          "synonyms": ["카우보이 비밥", "Kowboj Bebop"],
+          "release": { "year": 1998 },
+          "format": "TV",
+          "episodes": 26,
+          "studios": { "nodes": [{ "name": "Sunrise" }] },
+          "description": "Enter a world in the distant future.",
+          "coverImage": {
+            "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-GCsPm7waJ4kS.png",
+            "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-GCsPm7waJ4kS.png",
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1-GCsPm7waJ4kS.png"
+          }
+        }
+      ]
+    }
+  }
+}

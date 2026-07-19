@@ -1,0 +1,100 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-canvas: #f7f5f0;
+  --color-sidebar: #f1eee8;
+  --color-surface: #ffffff;
+  --color-text: #1c1c1a;
+  --color-text-secondary: #6f6d68;
+  --color-text-muted: #706d67;
+  --color-text-subtle: #706d67;
+  --color-palette-muted: #9a9790;
+  --color-border: #e4e0d8;
+  --color-hover: #eeeae3;
+  --color-accent: #c96b4b;
+  --font-sans: "Noto Sans SC Variable", "Noto Sans SC", "Microsoft YaHei",
+    system-ui, sans-serif;
+  --font-serif: "Newsreader Variable", "Noto Serif SC Variable",
+    "Noto Serif SC", "Songti SC", ui-serif, serif;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:not(:disabled) {
+  transition-duration: 180ms;
+  transition-property: background-color, border-color, color, opacity, transform;
+  transition-timing-function: ease;
+}
+
+button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #ead8cf;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

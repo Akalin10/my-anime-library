@@ -1,0 +1,119 @@
+.backdrop {
+  animation: backdrop-in 180ms ease both;
+  background: rgba(28, 28, 26, 0.58);
+  display: grid;
+  inset: 0;
+  padding: 20px;
+  place-items: center;
+  position: fixed;
+  z-index: 130;
+}
+
+.dialog {
+  animation: modal-in 200ms ease both;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  max-width: 440px;
+  padding: 30px;
+  width: min(440px, calc(100vw - 40px));
+}
+
+.eyebrow {
+  color: #9e4535;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 9px;
+  text-transform: uppercase;
+}
+
+.dialog h2 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.message {
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 20px 0 0;
+}
+
+.scope {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.error {
+  color: #9e4535;
+  font-size: 12px;
+  margin: 14px 0 0;
+}
+
+.actions {
+  display: flex;
+  gap: 9px;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.actions button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  min-height: 44px;
+  padding: 0 15px;
+}
+
+.actions button:last-child {
+  background: #8f3e32;
+  border-color: #8f3e32;
+  color: var(--color-surface);
+}
+
+.actions button:hover {
+  background: var(--color-hover);
+  border-color: #d2cdc4;
+}
+
+.actions button:last-child:hover {
+  background: #7f372d;
+  border-color: #7f372d;
+}
+
+.actions button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .dialog {
+    animation: none;
+  }
+}

@@ -1,0 +1,157 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 104px minmax(0, 1fr);
+  padding: 14px;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.card[data-selected] {
+  background: #fbf8f4;
+  border-color: #cbbdb1;
+}
+
+.card:hover {
+  border-color: #cbbdb1;
+}
+
+.poster {
+  aspect-ratio: 2 / 3;
+  background: #ece8e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.poster img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.headingRow {
+  align-items: start;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.headingRow h3 {
+  font-size: 15px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.nativeTitle {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 4px 0 0;
+}
+
+.importState {
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+  font-size: 12px;
+  padding-top: 2px;
+}
+
+.importState[data-imported="true"] {
+  color: #65715f;
+}
+
+.metadata {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 16px 0;
+}
+
+.metadata div {
+  display: grid;
+  gap: 2px;
+}
+
+.metadata dt {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.metadata dd {
+  font-size: 12px;
+  margin: 0;
+}
+
+.controls {
+  align-items: end;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.checkboxLabel {
+  align-items: center;
+  display: inline-flex;
+  font-size: 13px;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.checkboxLabel input {
+  accent-color: var(--color-accent);
+  height: 16px;
+  width: 16px;
+}
+
+.statusField {
+  display: grid;
+  gap: 4px;
+}
+
+.statusField span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.statusField select {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  color: var(--color-text);
+  min-height: 44px;
+  padding: 0 28px 0 9px;
+}
+
+@media (max-width: 620px) {
+  .card {
+    gap: 13px;
+    grid-template-columns: 82px minmax(0, 1fr);
+    padding: 11px;
+  }
+
+  .metadata {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

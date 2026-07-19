@@ -1,0 +1,41 @@
+.list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.item {
+  align-items: center;
+  background: #fdebeb;
+  border: 1px solid #e8c8c3;
+  border-radius: 6px;
+  color: #8f3e32;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.item p {
+  font-size: 12px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.item button {
+  flex: 0 0 auto;
+}
+
+.item button {
+  background: transparent;
+  border: 1px solid #d6aaa3;
+  border-radius: 5px;
+  color: inherit;
+  min-height: 44px;
+  padding: 0 11px;
+}
+
+.item button:hover {
+  background: #f7dfdc;
+  border-color: #c88f86;
+}

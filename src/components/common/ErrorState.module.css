@@ -1,0 +1,25 @@
+.state {
+  color: var(--color-text-secondary);
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.state h2 {
+  color: var(--color-text);
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 18px;
+}
+
+.state button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.state button:hover {
+  background: var(--color-hover);
+  border-color: #d2cdc4;
+}
