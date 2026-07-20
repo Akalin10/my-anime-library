@@ -41,7 +41,7 @@
 }
 
 .empty button {
-  background: var(--color-text);
+  background: var(--color-accent);
   border: 0;
   border-radius: 6px;
   color: #fff;
@@ -51,7 +51,7 @@
 }
 
 .empty button:hover {
-  background: #333330;
+  background: var(--color-accent-hover);
 }
 
 .empty button:active {

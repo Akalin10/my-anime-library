@@ -1,19 +1,52 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { CustomSelect } from "@/components/common/CustomSelect";
 import { ErrorState } from "@/components/common/ErrorState";
-import { ANIME_SOURCES, SOURCE_LABELS, type AnimeSource } from "@/lib/sources/types";
+import {
+  isBuiltinSource,
+  type CustomSourceConfig,
+} from "@/lib/sources/types";
 import type { ApiResponse } from "@/types/api";
 import type {
   SearchCacheClearData,
   SettingsData,
   SettingsUpdateInput,
   SourceAvailability,
+  ThemeMode,
 } from "@/types/settings";
 
 import styles from "./SettingsForm.module.css";
+
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 50);
+}
+
+function resolveTheme(t: ThemeMode): "light" | "dark" {
+  if (t === "system") {
+    if (typeof window === "undefined") return "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+  return t;
+}
+
+function applyTheme(t: ThemeMode) {
+  const resolved = resolveTheme(t);
+  document.documentElement.dataset.theme = resolved;
+  try {
+    localStorage.setItem("theme", t);
+  } catch {
+    /* ignore */
+  }
+}
 
 async function getApiData<T>(url: string): Promise<T> {
   const response = await fetch(url, { cache: "no-store" });
@@ -64,8 +97,8 @@ export function SettingsForm() {
       <ErrorState
         className={styles.message}
         onRetry={() => {
-            void settingsQuery.refetch();
-            void sourcesQuery.refetch();
+          void settingsQuery.refetch();
+          void sourcesQuery.refetch();
         }}
       />
     );
@@ -80,6 +113,12 @@ export function SettingsForm() {
   );
 }
 
+const THEME_OPTIONS = [
+  { value: "light", label: "浅色模式" },
+  { value: "dark", label: "深色模式" },
+  { value: "system", label: "跟随系统" },
+] as const;
+
 export function SettingsEditor({
   initialSettings,
   sources,
@@ -88,20 +127,36 @@ export function SettingsEditor({
   sources: SourceAvailability[];
 }) {
   const queryClient = useQueryClient();
-  const [enabledSources, setEnabledSources] = useState<AnimeSource[]>(
+  const [enabledSources, setEnabledSources] = useState<string[]>(
     initialSettings.enabledSources,
   );
-  const [sourcePriority, setSourcePriority] = useState<AnimeSource[]>(
+  const [sourcePriority, setSourcePriority] = useState<string[]>(
     initialSettings.sourcePriority,
+  );
+  const [customSources, setCustomSources] = useState<CustomSourceConfig[]>(
+    initialSettings.customSources ?? [],
   );
   const [posterStoragePath, setPosterStoragePath] = useState(
     initialSettings.posterStoragePath,
   );
+  const [theme, setTheme] = useState<ThemeMode>(
+    initialSettings.theme ?? "light",
+  );
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newSourceName, setNewSourceName] = useState("");
+  const [newSourceUrl, setNewSourceUrl] = useState("");
 
   const saveMutation = useMutation({
     mutationFn: saveSettings,
     onSuccess: async (data) => {
       queryClient.setQueryData(["settings"], data);
+      try {
+        localStorage.setItem("theme", data.theme);
+      } catch {
+        /* ignore */
+      }
+      document.documentElement.dataset.theme = resolveTheme(data.theme);
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["source-status"] }),
         queryClient.invalidateQueries({ queryKey: ["external-search"] }),
@@ -115,18 +170,51 @@ export function SettingsEditor({
     },
   });
 
-  function toggleSource(source: AnimeSource) {
+  // Watch system theme changes
+  useEffect(() => {
+    if (theme !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => {
+      document.documentElement.dataset.theme = mq.matches ? "dark" : "light";
+    };
+    document.documentElement.dataset.theme = mq.matches ? "dark" : "light";
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [theme]);
+
+  const handleThemeChange = useCallback(
+    (value: string) => {
+      const t = value as ThemeMode;
+      setTheme(t);
+      applyTheme(t);
+      saveMutation.reset();
+    },
+    [saveMutation],
+  );
+
+  const allSources = useMemo<SourceAvailability[]>(() => {
+    const customEntries: SourceAvailability[] = customSources.map((cs) => ({
+      source: cs.id,
+      label: cs.name,
+      enabled: enabledSources.includes(cs.id),
+      available: true,
+      environment: [
+        { name: cs.apiUrl, configured: true, sensitive: false },
+      ],
+    }));
+    return [...sources, ...customEntries];
+  }, [sources, customSources, enabledSources]);
+
+  function toggleSource(source: string) {
     setEnabledSources((current) =>
       current.includes(source)
         ? current.filter((item) => item !== source)
-        : ANIME_SOURCES.filter(
-            (candidate) => candidate === source || current.includes(candidate),
-          ),
+        : [...current, source],
     );
     saveMutation.reset();
   }
 
-  function changePriority(index: number, source: AnimeSource) {
+  function changePriority(index: number, source: string) {
     setSourcePriority((current) => {
       const otherIndex = current.indexOf(source);
       if (otherIndex === index || otherIndex < 0) return current;
@@ -136,6 +224,52 @@ export function SettingsEditor({
     });
     saveMutation.reset();
   }
+
+  function addCustomSource() {
+    const trimmedName = newSourceName.trim();
+    const trimmedUrl = newSourceUrl.trim();
+    if (!trimmedName || !trimmedUrl) return;
+
+    const id = slugify(trimmedName);
+    if (!id) return;
+
+    // Prevent duplicate IDs
+    if (
+      isBuiltinSource(id) ||
+      customSources.some((cs) => cs.id === id)
+    ) {
+      return;
+    }
+
+    const newSource: CustomSourceConfig = {
+      id,
+      name: trimmedName,
+      apiUrl: trimmedUrl,
+    };
+    setCustomSources((prev) => [...prev, newSource]);
+    setEnabledSources((prev) => [...prev, id]);
+    setSourcePriority((prev) => [...prev, id]);
+    setNewSourceName("");
+    setNewSourceUrl("");
+    setShowAddForm(false);
+    saveMutation.reset();
+  }
+
+  function deleteCustomSource(id: string) {
+    setCustomSources((prev) => prev.filter((cs) => cs.id !== id));
+    setEnabledSources((prev) => prev.filter((s) => s !== id));
+    setSourcePriority((prev) => prev.filter((s) => s !== id));
+    saveMutation.reset();
+  }
+
+  const priorityOptions = useMemo(
+    () =>
+      allSources.map((s) => ({
+        value: s.source,
+        label: s.label,
+      })),
+    [allSources],
+  );
 
   return (
     <div className={styles.page}>
@@ -152,17 +286,34 @@ export function SettingsEditor({
           saveMutation.mutate({
             enabledSources,
             sourcePriority,
+            customSources,
             posterStoragePath,
+            theme,
           });
         }}
       >
+        <section className={styles.section}>
+          <div className={styles.sectionIntro}>
+            <h2>外观</h2>
+            <p>切换全局界面的浅色、深色主题，或跟随系统设置。</p>
+          </div>
+          <div className={styles.themeSelect}>
+            <CustomSelect
+              ariaLabel="主题模式"
+              options={THEME_OPTIONS}
+              value={theme}
+              onChange={handleThemeChange}
+            />
+          </div>
+        </section>
+
         <section className={styles.section}>
           <div className={styles.sectionIntro}>
             <h2>启用的数据源</h2>
             <p>只向已启用且当前可用的数据源发起搜索。</p>
           </div>
           <div className={styles.sourceList}>
-            {sources.map((source) => (
+            {allSources.map((source) => (
               <label className={styles.sourceRow} key={source.source}>
                 <input
                   checked={enabledSources.includes(source.source)}
@@ -176,9 +327,82 @@ export function SettingsEditor({
                     {source.available ? "当前可用" : "当前不可用"}
                   </small>
                 </span>
+                {!isBuiltinSource(source.source) && (
+                  <button
+                    className={styles.deleteSourceButton}
+                    disabled={saveMutation.isPending}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      deleteCustomSource(source.source);
+                    }}
+                    type="button"
+                    aria-label={`删除 ${source.label}`}
+                    title={`删除 ${source.label}`}
+                  >
+                    ✕
+                  </button>
+                )}
               </label>
             ))}
           </div>
+
+          {showAddForm ? (
+            <div className={styles.customSourceForm}>
+              <input
+                className={styles.customSourceInput}
+                maxLength={100}
+                onChange={(e) => setNewSourceName(e.target.value)}
+                placeholder="数据源名称（如 My API）"
+                type="text"
+                value={newSourceName}
+              />
+              <input
+                className={styles.customSourceInput}
+                maxLength={500}
+                onChange={(e) => setNewSourceUrl(e.target.value)}
+                placeholder="API 地址（如 https://api.example.com）"
+                type="url"
+                value={newSourceUrl}
+              />
+              <div className={styles.customSourceActions}>
+                <button
+                  className={styles.addSourceConfirm}
+                  disabled={!newSourceName.trim() || !newSourceUrl.trim()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    addCustomSource();
+                  }}
+                  type="button"
+                >
+                  确认添加
+                </button>
+                <button
+                  className={styles.addSourceCancel}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowAddForm(false);
+                    setNewSourceName("");
+                    setNewSourceUrl("");
+                  }}
+                  type="button"
+                >
+                  取消
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className={styles.addSourceButton}
+              disabled={saveMutation.isPending}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowAddForm(true);
+              }}
+              type="button"
+            >
+              + 添加自定义数据源
+            </button>
+          )}
         </section>
 
         <section className={styles.section}>
@@ -190,19 +414,12 @@ export function SettingsEditor({
             {sourcePriority.map((source, index) => (
               <label key={`${index}-${source}`}>
                 <span>第 {index + 1} 优先</span>
-                <select
-                  disabled={saveMutation.isPending}
-                  onChange={(event) =>
-                    changePriority(index, event.target.value as AnimeSource)
-                  }
+                <CustomSelect
+                  ariaLabel={`第 ${index + 1} 优先数据源`}
+                  onChange={(value) => changePriority(index, value as string)}
+                  options={priorityOptions}
                   value={source}
-                >
-                  {ANIME_SOURCES.map((option) => (
-                    <option key={option} value={option}>
-                      {SOURCE_LABELS[option]}
-                    </option>
-                  ))}
-                </select>
+                />
               </label>
             ))}
           </div>

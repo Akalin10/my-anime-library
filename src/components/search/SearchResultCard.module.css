@@ -10,12 +10,12 @@
 }
 
 .card[data-selected] {
-  background: #fbf8f4;
-  border-color: #cbbdb1;
+  background: var(--color-hover);
+  border-color: var(--color-palette-muted);
 }
 
 .card:hover {
-  border-color: #cbbdb1;
+  border-color: var(--color-palette-muted);
 }
 
 .poster {

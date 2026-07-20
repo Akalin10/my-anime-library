@@ -44,8 +44,9 @@ function focusableElements(container: HTMLElement) {
 async function searchExternalAnime(
   query: string,
   signal: AbortSignal,
+  sources?: string[],
 ): Promise<ExternalSearchData> {
-  const response = await fetch(buildExternalSearchUrl(query), {
+  const response = await fetch(buildExternalSearchUrl(query, sources), {
     cache: "no-store",
     signal,
   });
@@ -87,6 +88,7 @@ export function SearchImportModal({
   const [selection, setSelection] = useState<ImportSelection>({});
   const [globalStatus, setGlobalStatus] = useState<AnimeStatus>("WATCHING");
   const [importResult, setImportResult] = useState<ImportBatchResult | null>(null);
+  const [selectedSources, setSelectedSources] = useState<string[]>([]);
 
   useEffect(() => {
     const debouncer = createDebouncedCommitter(
@@ -122,8 +124,13 @@ export function SearchImportModal({
   const effectiveQuery = manualQuery ?? debouncedQuery;
   const isDebouncing = draftQuery.trim() !== effectiveQuery;
   const externalQuery = useQuery({
-    queryKey: ["external-search", effectiveQuery],
-    queryFn: ({ signal }) => searchExternalAnime(effectiveQuery, signal),
+    queryKey: ["external-search", effectiveQuery, selectedSources],
+    queryFn: ({ signal }) =>
+      searchExternalAnime(
+        effectiveQuery,
+        signal,
+        selectedSources.length > 0 ? selectedSources : undefined,
+      ),
     enabled: Boolean(effectiveQuery),
   });
 
@@ -308,6 +315,11 @@ export function SearchImportModal({
                 ),
               )
             }
+            onSourcesChange={(sources) => {
+              setSelectedSources(sources);
+              setSelection({});
+              setImportResult(null);
+            }}
             onStatusChange={changeGlobalStatus}
             requestError={
               importMutation.isError
@@ -316,6 +328,7 @@ export function SearchImportModal({
             }
             result={importResult}
             selectedCount={selectedCount}
+            selectedSources={selectedSources}
             status={globalStatus}
           />
         </div>

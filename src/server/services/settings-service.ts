@@ -2,7 +2,7 @@ import { constants } from "node:fs";
 import { access, lstat, mkdir, realpath } from "node:fs/promises";
 import { resolve, sep } from "node:path";
 
-import { ANIME_SOURCES, SOURCE_LABELS } from "@/lib/sources/types";
+import { ANIME_SOURCES, SOURCE_LABELS, type CustomSourceConfig } from "@/lib/sources/types";
 import {
   getEffectiveDatabasePath,
   getEffectivePosterStoragePath,
@@ -57,6 +57,9 @@ export class SettingsService {
 
   get(): SettingsData {
     const sourceSettings = getSourceRuntimeSettings(this.repository);
+    const rawTheme = this.repository.get(SETTING_KEYS.theme);
+    const theme: SettingsData["theme"] =
+      rawTheme === "dark" ? "dark" : rawTheme === "system" ? "system" : "light";
     return {
       ...sourceSettings,
       posterStoragePath: getEffectivePosterStoragePath(
@@ -64,16 +67,18 @@ export class SettingsService {
         this.posterStorageDefault,
       ),
       databasePath: this.databasePath,
+      theme,
     };
   }
 
   getSources(): SourceAvailability[] {
-    const enabled = new Set(this.get().enabledSources);
+    const settings = this.get();
+    const enabled = new Set(settings.enabledSources);
     const bangumiUserAgent = Boolean(process.env.BANGUMI_USER_AGENT?.trim());
     const aniListConfigured = isValidUrl(process.env.ANILIST_API_URL);
     const tmdbConfigured = Boolean(process.env.TMDB_API_KEY?.trim());
 
-    return ANIME_SOURCES.map((source) => {
+    const builtinSources: SourceAvailability[] = ANIME_SOURCES.map((source) => {
       if (source === "bangumi") {
         return {
           source,
@@ -123,6 +128,20 @@ export class SettingsService {
         ],
       };
     });
+
+    const customSourceEntries: SourceAvailability[] = (
+      settings.customSources ?? []
+    ).map((cs) => ({
+      source: cs.id,
+      label: cs.name,
+      enabled: enabled.has(cs.id),
+      available: isValidUrl(cs.apiUrl),
+      environment: [
+        { name: cs.apiUrl, configured: isValidUrl(cs.apiUrl), sensitive: false },
+      ],
+    }));
+
+    return [...builtinSources, ...customSourceEntries];
   }
 
   async update(input: SettingsUpdateInput): Promise<SettingsData> {
@@ -141,7 +160,12 @@ export class SettingsService {
         key: SETTING_KEYS.sourcePriority,
         value: JSON.stringify(input.sourcePriority),
       },
+      {
+        key: SETTING_KEYS.customSources,
+        value: JSON.stringify(input.customSources ?? []),
+      },
       { key: SETTING_KEYS.posterStoragePath, value: posterStoragePath },
+      { key: SETTING_KEYS.theme, value: input.theme },
     ]);
     if (previousPosterPath !== posterStoragePath) {
       this.onPosterPathChanged();

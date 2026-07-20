@@ -10,12 +10,11 @@ import { createTmdbAdapterFromEnv } from "@/lib/sources/tmdb";
 import { getEffectivePosterStoragePath } from "@/server/config/runtime-settings";
 import { SourceAdapterError } from "@/lib/sources/errors";
 import type {
-  AnimeSource,
   AnimeSourceAdapter,
   NormalizedAnime,
   NormalizedSourceReference,
 } from "@/lib/sources/types";
-import { BANGUMI_SOURCE, SOURCE_LABELS } from "@/lib/sources/types";
+import { BANGUMI_SOURCE, getSourceLabel } from "@/lib/sources/types";
 import {
   AnimeImportRepository,
   DuplicateAnimeError,
@@ -40,9 +39,9 @@ function sourceFailureCode(error: SourceAdapterError): ImportItemErrorCode {
 
 function failureMessage(
   code: ImportItemErrorCode,
-  source: AnimeSource,
+  source: string,
 ): string {
-  const label = SOURCE_LABELS[source];
+  const label = getSourceLabel(source);
   switch (code) {
     case "ALREADY_IMPORTED":
       return "该动漫已经导入。";
@@ -60,19 +59,20 @@ function failureMessage(
 }
 
 export class AnimeImportService {
-  private readonly adapters: Partial<Record<AnimeSource, AnimeSourceAdapter>>;
+  private readonly adapters: Partial<Record<string, AnimeSourceAdapter>>;
 
   constructor(
     adapterOrAdapters:
       | AnimeSourceAdapter
-      | Partial<Record<AnimeSource, AnimeSourceAdapter>>,
+      | Partial<Record<string, AnimeSourceAdapter>>,
     private readonly repository: AnimeImportRepository,
     private readonly posterStorage: DefaultPosterStorage,
   ) {
-    this.adapters =
+    this.adapters = (
       "searchAnime" in adapterOrAdapters
-        ? { [BANGUMI_SOURCE]: adapterOrAdapters }
-        : adapterOrAdapters;
+        ? { [BANGUMI_SOURCE]: adapterOrAdapters as AnimeSourceAdapter }
+        : adapterOrAdapters
+    ) as Partial<Record<string, AnimeSourceAdapter>>;
   }
 
   async importBatch(request: ImportBatchRequest): Promise<ImportBatchResult> {
@@ -98,7 +98,7 @@ export class AnimeImportService {
   }
 
   private async importOne(
-    source: AnimeSource,
+    source: string,
     sourceId: string,
     status: ImportBatchRequest["status"],
     requestedReferences: NormalizedSourceReference[] | undefined,
@@ -112,7 +112,7 @@ export class AnimeImportService {
         throw new SourceAdapterError(
           source,
           "UNAVAILABLE",
-          `${SOURCE_LABELS[source]} configuration is unavailable`,
+          `${getSourceLabel(source)} configuration is unavailable`,
         );
       }
 
@@ -122,7 +122,7 @@ export class AnimeImportService {
         throw new SourceAdapterError(
           source,
           "UNAVAILABLE",
-          `${SOURCE_LABELS[source]} returned a mismatched item`,
+          `${getSourceLabel(source)} returned a mismatched item`,
         );
       }
       detail = await this.supplementBangumiStudio(detail, requestedReferences);
@@ -226,7 +226,7 @@ let animeImportService: AnimeImportService | undefined;
 
 export function getAnimeImportService(): AnimeImportService {
   if (!animeImportService) {
-    const adapters: Partial<Record<AnimeSource, AnimeSourceAdapter>> = {};
+    const adapters: Partial<Record<string, AnimeSourceAdapter>> = {};
     try {
       adapters.bangumi = createBangumiAdapterFromEnv();
     } catch {

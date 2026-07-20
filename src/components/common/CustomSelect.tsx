@@ -1,21 +1,27 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 
-import type { AnimeSort } from "@/types/anime";
+import styles from "./CustomSelect.module.css";
 
-import styles from "./SortSelect.module.css";
-
-export const SORT_OPTIONS: { value: AnimeSort; label: string }[] = [
-  { value: "RECENT", label: "最近添加" },
-  { value: "TITLE", label: "标题" },
-  { value: "YEAR", label: "上映年份" },
-];
-
-type SortSelectProps = {
-  value: AnimeSort;
-  onChange: (value: AnimeSort) => void;
+export type CustomSelectOption<T extends string = string> = {
+  value: T;
+  label: string;
 };
 
-export function SortSelect({ value, onChange }: SortSelectProps) {
+type CustomSelectProps<T extends string = string> = {
+  ariaLabel: string;
+  options: readonly CustomSelectOption<T>[];
+  value: T;
+  onChange: (value: T) => void;
+};
+
+export function CustomSelect<T extends string = string>({
+  ariaLabel,
+  options,
+  value,
+  onChange,
+}: CustomSelectProps<T>) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -41,26 +47,25 @@ export function SortSelect({ value, onChange }: SortSelectProps) {
   }, [open]);
 
   const currentLabel =
-    SORT_OPTIONS.find((o) => o.value === value)?.label ?? "最近添加";
+    options.find((o) => o.value === value)?.label ?? options[0]?.label ?? "";
 
   return (
     <div className={styles.container} ref={containerRef}>
       <button
         aria-expanded={open}
         aria-haspopup="listbox"
-        aria-label="排序方式"
+        aria-label={ariaLabel}
         className={styles.trigger}
         onClick={() => setOpen((v) => !v)}
         type="button"
       >
-        <span className={styles.triggerLabel}>排序</span>
-        <span className={styles.triggerValue}>{currentLabel}</span>
+        <span className={styles.value}>{currentLabel}</span>
         <span aria-hidden="true" className={styles.arrow} data-open={open || undefined} />
       </button>
 
       {open ? (
-        <ul aria-label="排序方式" className={styles.menu} role="listbox">
-          {SORT_OPTIONS.map((option) => (
+        <ul aria-label={ariaLabel} className={styles.menu} role="listbox">
+          {options.map((option) => (
             <li key={option.value}>
               <button
                 aria-selected={option.value === value}

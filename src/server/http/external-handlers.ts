@@ -28,7 +28,7 @@ export async function handleExternalSearchRequest(
   }
 
   try {
-    return apiSuccess(await service.search(parsed.data.query));
+    return apiSuccess(await service.search(parsed.data.query, parsed.data.sources));
   } catch (error) {
     return (
       sourceErrorResponse(error) ??

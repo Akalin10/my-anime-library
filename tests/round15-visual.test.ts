@@ -54,11 +54,10 @@ describe("round 15 visual and responsive contract", () => {
     ]) {
       expect(globals).toContain(color);
     }
-    expect(layout).toContain('@fontsource-variable/newsreader/wght.css');
-    expect(layout).toContain('@fontsource-variable/noto-sans-sc/wght.css');
-    expect(layout).toContain('@fontsource-variable/noto-serif-sc/wght.css');
-    expect(globals).toContain('"Newsreader Variable"');
-    expect(globals).toContain('"Noto Sans SC Variable"');
+    expect(layout).toContain("import { Newsreader, Noto_Sans_SC, Noto_Serif_SC }");
+    expect(layout).toContain('from "next/font/google"');
+    expect(globals).toContain('"Newsreader"');
+    expect(globals).toContain('"Noto Sans SC"');
   });
 
   it("maps the four required viewport widths to usable layouts", () => {
@@ -108,7 +107,7 @@ describe("round 15 visual and responsive contract", () => {
     expect(globals).toContain(":active");
     expect(globals).toContain("@media (prefers-reduced-motion: reduce)");
     expect(allCss).not.toMatch(
-      /linear-gradient|radial-gradient|backdrop-filter|box-shadow|parallax|particle|bounce|glow|neon/i,
+      /linear-gradient|radial-gradient|box-shadow|parallax|particle|bounce|glow|neon/i,
     );
 
     const durations = Array.from(

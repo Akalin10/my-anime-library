@@ -16,10 +16,9 @@
   --color-border: #e4e0d8;
   --color-hover: #eeeae3;
   --color-accent: #c96b4b;
-  --font-sans: "Noto Sans SC Variable", "Noto Sans SC", "Microsoft YaHei",
-    system-ui, sans-serif;
-  --font-serif: "Newsreader Variable", "Noto Serif SC Variable",
-    "Noto Serif SC", "Songti SC", ui-serif, serif;
+  --color-accent-hover: #b85f3f;
+  --font-sans: "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-serif: "Newsreader", "Noto Serif SC", "Songti SC", ui-serif, serif;
 }
 
 html,
@@ -31,7 +30,7 @@ body {
 body {
   background: var(--color-canvas);
   color: var(--color-text);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-synthesis: none;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
@@ -74,8 +73,241 @@ a:focus-visible,
   outline-offset: 2px;
 }
 
+[data-theme="dark"] {
+  --color-canvas: #1a1816;
+  --color-sidebar: #211f1c;
+  --color-surface: #2a2825;
+  --color-text: #e8e4dd;
+  --color-text-secondary: #9a9690;
+  --color-text-muted: #8a8680;
+  --color-text-subtle: #8a8680;
+  --color-palette-muted: #6a6762;
+  --color-border: #3a3630;
+  --color-hover: #36322d;
+  --color-accent: #d4856b;
+  --color-accent-hover: #e0986e;
+  color-scheme: dark;
+}
+
+[data-theme="dark"] ::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+[data-theme="dark"] button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+[data-theme="dark"] input:not([type]),
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] [class*="pathField"] input {
+  background: #242220;
+  border-color: #4a453d;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] [class*="inputWrap"] {
+  background: #242220;
+  border-color: #4a453d;
+}
+
+[data-theme="dark"] [class*="inputWrap"] input {
+  background: transparent;
+}
+
+[data-theme="dark"] [class*="inputWrap"]:focus-within {
+  border-color: #706960;
+}
+
+[data-theme="dark"] [class*="environmentRow"],
+[data-theme="dark"] [class*="databasePath"] {
+  background: #242220;
+}
+
+[data-theme="dark"] [class*="sourceRow"],
+[data-theme="dark"] [class*="environmentRow"] {
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] [class*="cacheAction"] button,
+[data-theme="dark"] [class*="themeToggle"] button:not([class*="themeActive"]) {
+  background: #2a2825;
+  border-color: #4a453d;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] [class*="cacheAction"] button:hover:not(:disabled),
+[data-theme="dark"] [class*="themeToggle"] button:hover:not(:disabled) {
+  background: #3a3630;
+  border-color: #5a554d;
+}
+
+[data-theme="dark"] select {
+  color-scheme: dark;
+}
+
+/* ImportSelectionBar — 右侧添加动漫侧边栏 */
+[data-theme="dark"] aside[class*="bar"] {
+  background: #2a2825;
+}
+
+[data-theme="dark"] aside[class*="bar"] [class*="result"] p,
+[data-theme="dark"] aside[class*="bar"] [class*="requestError"] {
+  color: #e89080;
+}
+
+/* SettingsForm — 默认数据源优先级下拉框 */
+[data-theme="dark"] [class*="priorityList"] select {
+  background: #242220;
+  border-color: #4a453d;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] [class*="sourceChip"] {
+  background: #2a2825;
+  border-color: #4a453d;
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] [class*="sourceChip"]:hover {
+  background: #3a3630;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] [class*="sourceChip"][data-active] {
+  background: #d4cfc7;
+  border-color: #d4cfc7;
+  color: #1c1c1a;
+}
+
+[data-theme="dark"] [class*="sourceChip"][data-active]:hover {
+  background: #e8e4dd;
+  border-color: #e8e4dd;
+}
+
+[data-theme="dark"] [class*="importSidebar"] {
+  background: #2a2825;
+}
+
+[data-theme="dark"] [class*="card"] [class*="caption"],
+[data-theme="dark"] [class*="resultCard"] {
+  background: #2a2825;
+  border-color: #4a453d;
+}
+
+[data-theme="dark"] [class*="poster"] [class*="placeholder"] {
+  background: #3a3630;
+}
+
+[data-theme="dark"] [class*="emptyState"] [class*="poster"] {
+  background: #3a3630;
+  border-color: #5a554d;
+}
+
+[data-theme="dark"] [class*="emptyState"] [class*="divider"] {
+  border-color: #5a554d;
+}
+
+[data-theme="dark"] [class*="mobileBar"],
+[data-theme="dark"] [class*="scrim"] {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] [class*="backdrop"] {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] [class*="modal"] {
+  background: var(--color-canvas);
+}
+
+[data-theme="dark"] [class*="closeButton"]:hover {
+  background: var(--color-hover);
+}
+
+[data-theme="dark"] [class*="errorBanner"],
+[data-theme="dark"] [class*="detailError"] {
+  background: #3d2420;
+  border-color: #6b3a32;
+  color: #e89080;
+}
+
+[data-theme="dark"] [class*="errorBanner"] button {
+  background: transparent;
+  border-color: #8b5050;
+  color: #e89080;
+}
+
+[data-theme="dark"] [class*="errorBanner"] button:hover {
+  background: #4d2c28;
+}
+
+[data-theme="dark"] [class*="dangerButton"],
+[data-theme="dark"] [class*="deleteButton"] {
+  color: #e89080;
+}
+
+[data-theme="dark"] [class*="confirmDialog"] [class*="cancel"]:hover {
+  background: #3a3630;
+  border-color: #5a554d;
+}
+
+[data-theme="dark"] [class*="confirmDialog"] [class*="danger"] {
+  background: #8b3a2e;
+  border-color: #8b3a2e;
+}
+
+[data-theme="dark"] [class*="confirmDialog"] [class*="danger"]:hover {
+  background: #7a3328;
+  border-color: #7a3328;
+}
+
+[data-theme="dark"] [class*="statusDot"] {
+  background: #c9a090;
+}
+
+[data-theme="dark"] [class*="menuButton"] {
+  background: #2a2825;
+  border-color: #4a453d;
+}
+
+[data-theme="dark"] [class*="menuButton"] > span,
+[data-theme="dark"] [class*="menuButton"] > span::before,
+[data-theme="dark"] [class*="menuButton"] > span::after {
+  background: var(--color-text);
+}
+
+[data-theme="dark"] [class*="sourceRow"] small[data-available="false"],
+[data-theme="dark"] [class*="environmentRow"] > span[data-configured="false"],
+[data-theme="dark"] [class*="posterError"],
+[data-theme="dark"] [class*="unavailableText"] {
+  color: #e89080;
+}
+
+[data-theme="dark"] [class*="sourceRow"] small[data-available="true"],
+[data-theme="dark"] [class*="environmentRow"] > span[data-configured="true"],
+[data-theme="dark"] [class*="importedText"],
+[data-theme="dark"] [class*="addedText"] {
+  color: #7db87d;
+}
+
+[data-theme="dark"] [class*="filterRow"] button:hover:not([class*="active"]),
+[data-theme="dark"] [class*="tab"]:hover:not([class*="active"]) {
+  background: var(--color-hover);
+}
+
+[data-theme="dark"] [class*="section"] + [class*="section"],
+[data-theme="dark"] [class*="footer"],
+[data-theme="dark"] [class*="settings"] {
+  border-color: #3a3630;
+}
+
 ::selection {
-  background: #ead8cf;
+  background: var(--color-accent);
+  color: #fff;
 }
 
 h1,

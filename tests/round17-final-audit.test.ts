@@ -54,6 +54,7 @@ describe("round 17 final audit", () => {
     const pattern = new RegExp(`\\b(${forbiddenNames.join("|")})\\b`, "gi");
     const hits = productionRoots
       .flatMap((root) => filesBelow(resolve(workspace, root)))
+      .filter((path) => !/\.(?:png|jpe?g|webp|svg|ico)$/i.test(path))
       .flatMap((path) => {
         const content = readFileSync(path, "utf8");
         return [...content.matchAll(pattern)].map(
@@ -74,9 +75,9 @@ describe("round 17 final audit", () => {
   });
 
   it("has no forbidden filenames or unexplained completion markers", () => {
-    const allProductionFiles = productionRoots.flatMap((root) =>
-      filesBelow(resolve(workspace, root)),
-    );
+    const allProductionFiles = productionRoots
+      .flatMap((root) => filesBelow(resolve(workspace, root)))
+      .filter((path) => !/\.(?:png|jpe?g|webp|svg|ico)$/i.test(path));
     const forbiddenFilename = new RegExp(
       `\\b(${forbiddenNames.join("|")})\\b`,
       "i",

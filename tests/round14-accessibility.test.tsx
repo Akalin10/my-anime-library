@@ -358,14 +358,16 @@ describe("round 14 empty, error and accessibility states", () => {
     expect(document.activeElement).toBe(close);
     expect((await axe.run(dialog!)).violations).toEqual([]);
 
-    const status = container.querySelector<HTMLSelectElement>(
-      "#anime-detail-status",
+    const statusTrigger = container.querySelector<HTMLButtonElement>(
+      'button[aria-label="观看状态"]',
     );
-    expect(status).toBeTruthy();
-    act(() => {
-      status!.value = "COMPLETED";
-      status!.dispatchEvent(new Event("change", { bubbles: true }));
-    });
+    expect(statusTrigger).toBeTruthy();
+    // Open the custom select and click the second option
+    act(() => { statusTrigger!.click(); });
+    const completedOption = document.querySelector<HTMLButtonElement>(
+      'button[role="option"]:not([aria-selected="true"])',
+    );
+    act(() => { completedOption?.click(); });
     await settle();
     expect(requests).toContainEqual({ url: "/api/anime/1/status", method: "PATCH" });
 

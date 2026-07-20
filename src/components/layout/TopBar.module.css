@@ -15,22 +15,20 @@
 }
 
 .addButton {
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
   border-radius: 6px;
-  height: 44px;
-}
-
-.addButton {
-  background: var(--color-text);
-  border: 1px solid var(--color-text);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
+  height: 44px;
   padding: 0 18px;
+  transition: background 180ms ease, border-color 180ms ease;
 }
 
 .addButton:hover {
-  background: #333330;
-  border-color: #333330;
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 .addButton:active {

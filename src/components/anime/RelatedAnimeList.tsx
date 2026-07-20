@@ -1,8 +1,14 @@
 import { AnimePoster } from "@/components/anime/AnimePoster";
+import { CustomSelect } from "@/components/common/CustomSelect";
 import type { AnimeStatus } from "@/lib/db/schema";
 import type { RelatedAnimeDetail } from "@/types/anime";
 
 import styles from "./AnimeDetailModal.module.css";
+
+const RELATED_STATUS_OPTIONS = [
+  { value: "WATCHING" as const, label: "在看" },
+  { value: "COMPLETED" as const, label: "已看完" },
+];
 
 export const RELATED_GROUP_ORDER = [
   "MAIN",
@@ -155,16 +161,12 @@ export function RelatedAnimeList({
           </div>
           <label>
             状态
-            <select
-              disabled={isImporting}
-              onChange={(event) =>
-                onImportStatusChange(event.target.value as AnimeStatus)
-              }
+            <CustomSelect
+              ariaLabel="导入状态"
+              onChange={onImportStatusChange}
+              options={RELATED_STATUS_OPTIONS}
               value={importStatus}
-            >
-              <option value="WATCHING">在看</option>
-              <option value="COMPLETED">已看</option>
-            </select>
+            />
           </label>
           <div className={styles.confirmActions}>
             <button disabled={isImporting} onClick={onCancelImport} type="button">

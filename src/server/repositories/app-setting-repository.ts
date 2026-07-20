@@ -6,7 +6,9 @@ import { appSettings } from "@/lib/db/schema";
 export const SETTING_KEYS = {
   enabledSources: "enabled_sources",
   sourcePriority: "source_priority",
+  customSources: "custom_sources",
   posterStoragePath: "poster_storage_path",
+  theme: "theme",
 } as const;
 
 export class AppSettingRepository {

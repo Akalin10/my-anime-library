@@ -7,6 +7,16 @@
   padding: 26px 24px;
 }
 
+.sourceFilter {
+  display: grid;
+  gap: 8px;
+}
+
+.sourceFilter span {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
 .summary {
   align-items: center;
   display: flex;
@@ -51,8 +61,8 @@
 }
 
 .importButton {
-  background: var(--color-text);
-  border: 1px solid var(--color-text);
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
   border-radius: 6px;
   color: #fff;
   font-size: 14px;
@@ -67,8 +77,8 @@
 }
 
 .importButton:hover:not(:disabled) {
-  background: #333330;
-  border-color: #333330;
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 .summary button:hover:not(:disabled) {

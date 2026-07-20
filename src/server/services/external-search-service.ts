@@ -8,8 +8,7 @@ import {
   ANILIST_SOURCE,
   BANGUMI_SOURCE,
   TMDB_SOURCE,
-  SOURCE_LABELS,
-  type AnimeSource,
+  getSourceLabel,
   type AnimeSourceAdapter,
   type NormalizedAnime,
   type NormalizedAnimeRelation,
@@ -22,7 +21,7 @@ import type {
 } from "@/types/external";
 
 export type SearchSource = {
-  source: AnimeSource;
+  source: string;
   adapter: AnimeSourceAdapter | null;
 };
 
@@ -65,8 +64,8 @@ export class ExternalSearchService {
     adapterOrSources: AnimeSourceAdapter | SearchSource[],
     private readonly repository: AnimeImportRepository,
     private readonly sourceSettings: () => {
-      enabledSources: AnimeSource[];
-      sourcePriority: AnimeSource[];
+      enabledSources: string[];
+      sourcePriority: string[];
     } = () => ({
       enabledSources: [...this.sources.map(({ source }) => source)],
       sourcePriority: [...this.sources.map(({ source }) => source)],
@@ -77,11 +76,14 @@ export class ExternalSearchService {
       : [{ source: BANGUMI_SOURCE, adapter: adapterOrSources }];
   }
 
-  async search(query: string): Promise<ExternalSearchData> {
+  async search(query: string, requestedSources?: string[]): Promise<ExternalSearchData> {
     const settings = this.sourceSettings();
     const enabled = new Set(settings.enabledSources);
+    const allowedSources = requestedSources?.length
+      ? requestedSources.filter((source) => enabled.has(source))
+      : [...enabled];
     const activeSources = this.sources.filter(({ source }) =>
-      enabled.has(source),
+      allowedSources.includes(source),
     );
     const searchedSources = await Promise.all(
       activeSources.map((source) => this.searchSource(source, query)),
@@ -91,7 +93,7 @@ export class ExternalSearchService {
       settings.sourcePriority,
     );
 
-    const existingBySource = new Map<AnimeSource, Set<string>>();
+    const existingBySource = new Map<string, Set<string>>();
     for (const source of activeSources) {
       const sourceIds = items.flatMap((item) =>
         item.sourceReferences
@@ -127,7 +129,7 @@ export class ExternalSearchService {
     source: SearchSource,
     query: string,
   ): Promise<SourceSearchResult> {
-    const label = SOURCE_LABELS[source.source];
+    const label = getSourceLabel(source.source);
     if (!source.adapter) {
       return {
         items: [],
@@ -199,8 +201,8 @@ export class ExternalSearchService {
   }
 }
 
-function sourceFailureMessage(source: AnimeSource, error: unknown): string {
-  const label = SOURCE_LABELS[source];
+function sourceFailureMessage(source: string, error: unknown): string {
+  const label = getSourceLabel(source);
   if (error instanceof SourceAdapterError) {
     if (error.code === "TIMEOUT") return `${label} 请求超时。`;
     if (error.code === "RATE_LIMIT") {

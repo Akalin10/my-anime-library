@@ -15,8 +15,32 @@ export const SOURCE_LABELS: Record<AnimeSource, string> = {
   tmdb: "TMDB",
 };
 
+export type CustomSourceConfig = {
+  id: string;
+  name: string;
+  apiUrl: string;
+};
+
+export function isBuiltinSource(id: string): id is AnimeSource {
+  return (ANIME_SOURCES as readonly string[]).includes(id);
+}
+
+export function getSourceLabel(
+  sourceId: string,
+  customSources?: CustomSourceConfig[],
+): string {
+  if (isBuiltinSource(sourceId)) {
+    return SOURCE_LABELS[sourceId];
+  }
+  if (customSources) {
+    const found = customSources.find((cs) => cs.id === sourceId);
+    if (found) return found.name;
+  }
+  return sourceId;
+}
+
 export type NormalizedSourceReference = {
-  source: AnimeSource;
+  source: string;
   sourceId: string;
 };
 

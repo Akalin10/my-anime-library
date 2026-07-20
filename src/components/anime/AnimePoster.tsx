@@ -11,6 +11,7 @@ type AnimePosterProps = {
   customPosterPath: string | null;
   defaultPosterPath: string | null;
   defaultPosterUrl: string | null;
+  onClick?: () => void;
 };
 
 function localPosterUrl(path: string | null): string | null {
@@ -47,6 +48,7 @@ export function AnimePoster({
   customPosterPath,
   defaultPosterPath,
   defaultPosterUrl,
+  onClick,
 }: AnimePosterProps) {
   const sources = useMemo(
     () =>
@@ -64,7 +66,11 @@ export function AnimePoster({
     sources.find((source) => !failedSources.has(source)) ?? PLACEHOLDER_URL;
 
   return (
-    <div className={styles.frame}>
+    <div
+      className={styles.frame}
+      data-clickable={onClick ? "" : undefined}
+      onClick={onClick}
+    >
       {/* Native img keeps the ordered local -> remote -> placeholder fallback. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

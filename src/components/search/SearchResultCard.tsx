@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 
+import { CustomSelect } from "@/components/common/CustomSelect";
 import type { AnimeStatus } from "@/lib/db/schema";
-import { SOURCE_LABELS } from "@/lib/sources/types";
+
+const CARD_STATUS_OPTIONS = [
+  { value: "WATCHING" as const, label: "在看" },
+  { value: "COMPLETED" as const, label: "已看完" },
+];
+import { getSourceLabel } from "@/lib/sources/types";
 import type { ExternalSearchResult } from "@/types/external";
 
 import styles from "./SearchResultCard.module.css";
@@ -93,7 +99,7 @@ export function SearchResultCard({
             <dt>数据来源</dt>
             <dd>
               {result.sourceReferences
-                .map(({ source }) => SOURCE_LABELS[source])
+                .map(({ source }) => getSourceLabel(source))
                 .filter((value, index, values) => values.indexOf(value) === index)
                 .join(" / ")}
             </dd>
@@ -114,16 +120,12 @@ export function SearchResultCard({
           {selected ? (
             <label className={styles.statusField}>
               <span>导入状态</span>
-              <select
-                aria-label={`${title}的导入状态`}
-                onChange={(event) =>
-                  onStatusChange(event.target.value as AnimeStatus)
-                }
+              <CustomSelect
+                ariaLabel={`${title}的导入状态`}
+                onChange={onStatusChange}
+                options={CARD_STATUS_OPTIONS}
                 value={status}
-              >
-                <option value="WATCHING">在看</option>
-                <option value="COMPLETED">已看完</option>
-              </select>
+              />
             </label>
           ) : null}
         </div>

@@ -1,23 +1,31 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
-import { AnimeDetailModal } from "@/components/anime/AnimeDetailModal";
 import { AnimeGrid } from "@/components/anime/AnimeGrid";
 import { EmptyLibraryState } from "@/components/anime/EmptyLibraryState";
 import { StatusTabs } from "@/components/anime/StatusTabs";
 import { ErrorState } from "@/components/common/ErrorState";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { TopBar } from "@/components/layout/TopBar";
-import { SearchImportModal } from "@/components/search/SearchImportModal";
-import { SettingsForm } from "@/components/settings/SettingsForm";
 import type { ApiResponse } from "@/types/api";
 import type {
   AnimeFilter,
   AnimeListData,
   AnimeSort,
 } from "@/types/anime";
+
+const AnimeDetailModal = dynamic(
+  () => import("@/components/anime/AnimeDetailModal").then((m) => m.AnimeDetailModal),
+);
+const SearchImportModal = dynamic(
+  () => import("@/components/search/SearchImportModal").then((m) => m.SearchImportModal),
+);
+const SettingsForm = dynamic(
+  () => import("@/components/settings/SettingsForm").then((m) => m.SettingsForm),
+);
 
 import styles from "./AnimeLibraryHome.module.css";
 

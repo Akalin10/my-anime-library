@@ -2,7 +2,6 @@ import {
   ANILIST_SOURCE,
   BANGUMI_SOURCE,
   TMDB_SOURCE,
-  type AnimeSource,
   type NormalizedAnime,
   type NormalizedSourceReference,
 } from "@/lib/sources/types";
@@ -115,7 +114,7 @@ function uniqueReferences(
 function mergeAnime(
   left: NormalizedAnime,
   right: NormalizedAnime,
-  sourcePriority: AnimeSource[],
+  sourcePriority: string[],
 ): NormalizedAnime {
   const priority = new Map(
     sourcePriority.map((source, index) => [source, index]),
@@ -168,7 +167,7 @@ function mergeAnime(
 
 export function deduplicateAnimeResults(
   items: NormalizedAnime[],
-  sourcePriority: AnimeSource[] = [
+  sourcePriority: string[] = [
     BANGUMI_SOURCE,
     ANILIST_SOURCE,
     TMDB_SOURCE,

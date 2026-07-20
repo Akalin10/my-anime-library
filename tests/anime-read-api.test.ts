@@ -179,8 +179,8 @@ describe("local anime read API", () => {
     const body = await responseBody<AnimeListData>(response);
 
     expect(body.data?.items.map(({ id }) => id)).toEqual([
-      ids.akira,
       ids.shirobako,
+      ids.akira,
       ids.mushishi,
     ]);
   });

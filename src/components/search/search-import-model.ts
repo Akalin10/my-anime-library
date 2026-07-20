@@ -70,6 +70,34 @@ function groupFromExplicitMediaType(mediaType: string | null): SearchGroupKey {
   return "OTHER";
 }
 
+function sortResultsWithinGroup(items: ExternalSearchResult[]): ExternalSearchResult[] {
+  const titleForSort = (item: ExternalSearchResult) =>
+    item.titleChinese ?? item.titleNative ?? item.titleEnglish ?? "";
+
+  return [...items].sort((left, right) => {
+    const leftType = left.mediaType?.trim().toUpperCase() ?? "";
+    const rightType = right.mediaType?.trim().toUpperCase() ?? "";
+    if (leftType !== rightType) {
+      const rank = (type: string) => {
+        if (type === "TV" || type === "MAIN") return 0;
+        if (type === "OVA" || type === "OAD") return 2;
+        if (type === "MOVIE" || type === "剧场版" || type === "映画") return 3;
+        if (type === "SPECIAL" || type === "SP" || type === "TVSP" || type === "特别篇") return 4;
+        if (type === "RECAP" || type === "总集篇") return 5;
+        if (type === "SIDE STORY" || type === "SIDE_STORY" || type === "SPIN-OFF" || type === "SPIN_OFF" || type === "外传") return 6;
+        return 7;
+      };
+      return rank(leftType) - rank(rightType);
+    }
+
+    const leftYear = left.year ?? 0;
+    const rightYear = right.year ?? 0;
+    if (leftYear !== rightYear) return rightYear - leftYear;
+
+    return titleForSort(left).localeCompare(titleForSort(right), "zh-CN");
+  });
+}
+
 export function groupSearchResults(items: ExternalSearchResult[]) {
   const groups = new Map<SearchGroupKey, ExternalSearchResult[]>();
 
@@ -81,13 +109,17 @@ export function groupSearchResults(items: ExternalSearchResult[]) {
   return SEARCH_GROUP_ORDER.flatMap((key) => {
     const groupedItems = groups.get(key);
     return groupedItems?.length
-      ? [{ key, label: SEARCH_GROUP_LABELS[key], items: groupedItems }]
+      ? [{ key, label: SEARCH_GROUP_LABELS[key], items: sortResultsWithinGroup(groupedItems) }]
       : [];
   });
 }
 
-export function buildExternalSearchUrl(query: string) {
-  return `/api/search?${new URLSearchParams({ query: query.trim() }).toString()}`;
+export function buildExternalSearchUrl(query: string, sources?: string[]) {
+  const parameters = new URLSearchParams({ query: query.trim() });
+  for (const source of sources ?? []) {
+    parameters.append("sources", source);
+  }
+  return `/api/search?${parameters.toString()}`;
 }
 
 export function buildImportRequest(
@@ -113,8 +145,8 @@ export function buildImportRequest(
       }
 
       const [possibleSource, possibleSourceId] = key.split(":", 2);
-      const source = ANIME_SOURCES.includes(possibleSource as AnimeSource)
-        ? (possibleSource as AnimeSource)
+      const source = (ANIME_SOURCES as readonly string[]).includes(possibleSource)
+        ? possibleSource
         : "bangumi";
       return {
         source,

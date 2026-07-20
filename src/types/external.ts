@@ -1,6 +1,5 @@
 import type { AnimeStatus, RelationType } from "@/lib/db/schema";
 import type {
-  AnimeSource,
   NormalizedAnime,
   NormalizedSourceReference,
 } from "@/lib/sources/types";
@@ -10,7 +9,7 @@ export type ExternalSearchResult = NormalizedAnime & {
 };
 
 export type ExternalSourceState = {
-  source: AnimeSource;
+  source: string;
   label: string;
   status: "SUCCESS" | "ERROR";
   message: string | null;
@@ -22,7 +21,7 @@ export type ExternalSearchData = {
 };
 
 export type ImportRequestItem = {
-  source: AnimeSource;
+  source: string;
   sourceId: string;
   sourceReferences?: NormalizedSourceReference[];
   status?: AnimeStatus;
@@ -43,7 +42,7 @@ export type ImportItemErrorCode =
 
 export type ImportItemSuccess = {
   success: true;
-  source: AnimeSource;
+  source: string;
   sourceId: string;
   animeId: number;
   status: AnimeStatus;
@@ -54,7 +53,7 @@ export type ImportItemSuccess = {
 
 export type ImportItemFailure = {
   success: false;
-  source: AnimeSource;
+  source: string;
   sourceId: string;
   titleChinese: string | null;
   titleNative: string | null;

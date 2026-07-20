@@ -1,7 +1,19 @@
+import { CustomSelect } from "@/components/common/CustomSelect";
 import type { AnimeStatus } from "@/lib/db/schema";
+import { ANIME_SOURCES, SOURCE_LABELS } from "@/lib/sources/types";
 import type { ImportBatchResult } from "@/types/external";
 
 import styles from "./ImportSelectionBar.module.css";
+
+const STATUS_OPTIONS = [
+  { value: "WATCHING" as const, label: "在看" },
+  { value: "COMPLETED" as const, label: "已看完" },
+];
+
+const SOURCE_FILTER_OPTIONS = [
+  { value: "", label: "全部数据源" },
+  ...ANIME_SOURCES.map((s) => ({ value: s, label: SOURCE_LABELS[s] })),
+];
 
 type ImportSelectionBarProps = {
   selectedCount: number;
@@ -9,6 +21,8 @@ type ImportSelectionBarProps = {
   isImporting: boolean;
   result: ImportBatchResult | null;
   requestError: string | null;
+  selectedSources: string[];
+  onSourcesChange: (sources: string[]) => void;
   onStatusChange: (status: AnimeStatus) => void;
   onClear: () => void;
   onImport: () => void;
@@ -20,12 +34,26 @@ export function ImportSelectionBar({
   isImporting,
   result,
   requestError,
+  selectedSources,
+  onSourcesChange,
   onStatusChange,
   onClear,
   onImport,
 }: ImportSelectionBarProps) {
+  const currentSource = selectedSources.length > 0 ? selectedSources[0] : "";
+
   return (
     <aside className={styles.bar} aria-label="导入选择">
+      <label className={styles.sourceFilter}>
+        <span>数据源</span>
+        <CustomSelect
+          ariaLabel="筛选数据源"
+          onChange={(value) => onSourcesChange(value ? [value] : [])}
+          options={SOURCE_FILTER_OPTIONS}
+          value={currentSource}
+        />
+      </label>
+
       <div className={styles.summary}>
         <strong>已选择 {selectedCount} 部</strong>
         <button
@@ -39,16 +67,12 @@ export function ImportSelectionBar({
 
       <label className={styles.globalStatus}>
         <span>统一设置状态</span>
-        <select
-          disabled={isImporting}
-          onChange={(event) =>
-            onStatusChange(event.target.value as AnimeStatus)
-          }
+        <CustomSelect
+          ariaLabel="统一设置状态"
+          onChange={onStatusChange}
+          options={STATUS_OPTIONS}
           value={status}
-        >
-          <option value="WATCHING">在看</option>
-          <option value="COMPLETED">已看完</option>
-        </select>
+        />
       </label>
 
 

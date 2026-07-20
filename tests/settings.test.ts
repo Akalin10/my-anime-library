@@ -123,6 +123,7 @@ describe("settings", () => {
         enabledSources: ["anilist", "tmdb"],
         sourcePriority: ["tmdb", "anilist", "bangumi"],
         posterStoragePath: posterPath,
+        theme: "dark",
       }),
     });
     const response = await handleUpdateSettingsRequest(request, service);
@@ -132,8 +133,10 @@ describe("settings", () => {
     expect(result.data).toEqual({
       enabledSources: ["anilist", "tmdb"],
       sourcePriority: ["tmdb", "anilist", "bangumi"],
+      customSources: [],
       posterStoragePath: posterPath,
       databasePath: resolve(sandboxRoot, "anime.db"),
+      theme: "dark",
     });
     expect(repository.get(SETTING_KEYS.enabledSources)).toBe(
       '["anilist","tmdb"]',
@@ -163,6 +166,7 @@ describe("settings", () => {
           enabledSources: ["bangumi"],
           sourcePriority: ["bangumi", "bangumi", "tmdb"],
           posterStoragePath: sandboxRoot,
+          theme: "light",
         }),
       }),
       new SettingsService(repository),
@@ -175,6 +179,7 @@ describe("settings", () => {
           enabledSources: [],
           sourcePriority: ["bangumi", "anilist", "tmdb"],
           posterStoragePath: filePath,
+          theme: "light",
         }),
       }),
       new SettingsService(repository),

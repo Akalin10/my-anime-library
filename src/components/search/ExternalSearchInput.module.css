@@ -21,66 +21,110 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   display: flex;
-  min-height: 48px;
-  padding: 0 15px;
-}
-
-.searchIcon {
-  border: 2px solid var(--color-text-muted);
-  border-radius: 50%;
-  height: 15px;
-  margin-right: 12px;
-  position: relative;
-  width: 15px;
-}
-
-.searchIcon::after {
-  background: var(--color-text-muted);
-  content: "";
-  height: 2px;
-  position: absolute;
-  right: -5px;
-  top: 11px;
-  transform: rotate(45deg);
-  width: 7px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 14px;
 }
 
 .inputWrap:focus-within {
-  border-color: #bbb5ab;
+  border-color: var(--color-accent);
 }
 
 .inputWrap input {
   background: transparent;
   border: 0;
   color: var(--color-text);
-  font: inherit;
+  flex: 1;
+  font-size: 15px;
   min-width: 0;
-  outline: 0;
-  width: 100%;
+  outline: none;
+  padding: 0;
 }
 
 .inputWrap input::placeholder {
   color: var(--color-text-muted);
 }
 
-.form > button {
-  background: var(--color-text);
-  border: 1px solid var(--color-text);
-  border-radius: 6px;
-  color: #fff;
-  font-size: 14px;
-  min-height: 48px;
-  padding: 0 22px;
+.searchIcon {
+  background: none;
+  border: 2px solid var(--color-text-muted);
+  border-radius: 50%;
+  display: block;
+  flex-shrink: 0;
+  height: 15px;
+  position: relative;
+  width: 15px;
 }
 
-.form > button:disabled {
+.searchIcon::after {
+  background: var(--color-text-muted);
+  border-radius: 1px;
+  bottom: -2px;
+  content: "";
+  display: block;
+  height: 5px;
+  position: absolute;
+  right: -1px;
+  transform: rotate(-45deg);
+  width: 2px;
+}
+
+.submitButton {
+  align-items: center;
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 22px;
+  color: #fff;
+  display: flex;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 18px;
+}
+
+.submitButton:disabled {
   cursor: not-allowed;
   opacity: 0.45;
 }
 
-.form > button:hover:not(:disabled) {
-  background: #333330;
-  border-color: #333330;
+.submitButton:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.submitIcon {
+  display: block;
+  flex-shrink: 0;
+  height: 14px;
+  position: relative;
+  width: 14px;
+}
+
+.submitIcon::before {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  height: 11px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 11px;
+}
+
+.submitIcon::after {
+  background: currentColor;
+  border-radius: 1px;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 5px;
+  position: absolute;
+  right: 0;
+  transform: rotate(-45deg);
+  width: 2px;
 }
 
 @media (max-width: 560px) {

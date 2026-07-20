@@ -1,6 +1,12 @@
+import { CustomSelect } from "@/components/common/CustomSelect";
 import type { AnimeStatus } from "@/lib/db/schema";
 
 import styles from "./AnimeDetailModal.module.css";
+
+const STATUS_OPTIONS = [
+  { value: "WATCHING" as const, label: "在看" },
+  { value: "COMPLETED" as const, label: "已看" },
+];
 
 type AnimeStatusSelectorProps = {
   status: AnimeStatus;
@@ -19,17 +25,14 @@ export function AnimeStatusSelector({
 }: AnimeStatusSelectorProps) {
   return (
     <div className={styles.statusControl}>
-      <label htmlFor="anime-detail-status">观看状态</label>
+      <label>观看状态</label>
       <div>
-        <select
-          disabled={isSaving}
-          id="anime-detail-status"
-          onChange={(event) => onChange(event.target.value as AnimeStatus)}
+        <CustomSelect
+          ariaLabel="观看状态"
+          onChange={onChange}
+          options={STATUS_OPTIONS}
           value={status}
-        >
-          <option value="WATCHING">在看</option>
-          <option value="COMPLETED">已看</option>
-        </select>
+        />
         <span aria-live="polite" className={styles.saveMessage}>
           {isSaving ? "保存中…" : isSaved ? "已保存" : ""}
         </span>

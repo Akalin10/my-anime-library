@@ -6,6 +6,10 @@
   position: relative;
 }
 
+.frame[data-clickable] {
+  cursor: pointer;
+}
+
 .frame img {
   display: block;
   height: 100%;

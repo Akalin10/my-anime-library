@@ -93,24 +93,18 @@ describe("anime detail interface", () => {
     expect(markup).not.toMatch(/评分|排名|热度|声优|角色|单集/);
   });
 
-  it("changes status immediately through the two allowed values", () => {
-    const changes: string[] = [];
+  it("renders the current status in a custom select trigger", () => {
     const selector = AnimeStatusSelector({
       status: "WATCHING",
       isSaving: false,
       isSaved: false,
       error: null,
-      onChange: (status) => changes.push(status),
+      onChange: () => undefined,
     }) as ReactElement;
-    const wrapper = (selector.props as { children: ReactElement[] }).children[1];
-    const select = (wrapper.props as { children: ReactElement[] }).children[0];
-
-    (select.props as {
-      onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-    }).onChange({ target: { value: "COMPLETED" } } as ChangeEvent<HTMLSelectElement>);
-
-    expect(changes).toEqual(["COMPLETED"]);
-    expect(renderToStaticMarkup(selector)).toContain("观看状态");
+    const markup = renderToStaticMarkup(selector);
+    expect(markup).toContain("观看状态");
+    expect(markup).toContain("在看");
+    expect(markup).toContain("aria-label=\"观看状态\"");
   });
 
   it("shows imported navigation and an explicit confirmation for unimported works", () => {

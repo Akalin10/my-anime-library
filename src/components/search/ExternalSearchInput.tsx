@@ -38,7 +38,12 @@ export function ExternalSearchInput({
           />
         </span>
       </label>
-      <button disabled={!value.trim()} type="submit">
+      <button
+        className={styles.submitButton}
+        disabled={!value.trim()}
+        type="submit"
+      >
+        <span className={styles.submitIcon} aria-hidden="true" />
         搜索
       </button>
     </form>

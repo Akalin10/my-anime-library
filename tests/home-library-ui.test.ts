@@ -18,7 +18,7 @@ import { AnimeCard } from "@/components/anime/AnimeCard";
 import { AnimePoster } from "@/components/anime/AnimePoster";
 import { buildAnimeListUrl } from "@/components/anime/AnimeLibraryHome";
 import { EmptyLibraryState } from "@/components/anime/EmptyLibraryState";
-import { SortSelect } from "@/components/anime/SortSelect";
+import { SORT_OPTIONS, SortSelect } from "@/components/anime/SortSelect";
 import { StatusTabs } from "@/components/anime/StatusTabs";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import type { AnimeListItem } from "@/types/anime";
@@ -71,22 +71,8 @@ describe("home poster wall components", () => {
   });
 
   it("changes only among the three allowed sort modes", () => {
-    const changes: string[] = [];
-    const field = SortSelect({
-      value: "RECENT",
-      onChange: (value) => changes.push(value),
-    }) as ReactElement;
-    const select = childElements(field).find((child) => child.type === "select");
-
-    (select?.props as { onChange: (event: ChangeEvent<HTMLSelectElement>) => void })
-      .onChange({ target: { value: "YEAR" } } as ChangeEvent<HTMLSelectElement>);
-
-    expect(changes).toEqual(["YEAR"]);
-    expect(
-      childElements(select as ReactElement).map(
-        (option) => (option.props as { value: string }).value,
-      ),
-    ).toEqual(["RECENT", "TITLE", "YEAR"]);
+    expect(SORT_OPTIONS.map((o) => o.value)).toEqual(["RECENT", "TITLE", "YEAR"]);
+    expect(SORT_OPTIONS.map((o) => o.label)).toEqual(["最近添加", "标题", "上映年份"]);
   });
 
   it("builds the local API URL for filter, sort and trimmed search", () => {

@@ -4,8 +4,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState, type RefObject } from "react";
 
 import { AnimeMetadata } from "@/components/anime/AnimeMetadata";
-import { AnimePoster } from "@/components/anime/AnimePoster";
+import { AnimePoster, posterSourceCandidates } from "@/components/anime/AnimePoster";
 import { AnimeStatusSelector } from "@/components/anime/AnimeStatusSelector";
+import { PosterLightbox } from "@/components/anime/PosterLightbox";
 import { PosterManagerModal } from "@/components/anime/PosterManagerModal";
 import { RelatedAnimeList } from "@/components/anime/RelatedAnimeList";
 import { ErrorState } from "@/components/common/ErrorState";
@@ -121,6 +122,9 @@ export function AnimeDetailModal({
   const [isPosterOpen, setIsPosterOpen] = useState(false);
   const [posterTrigger, setPosterTrigger] =
     useState<HTMLButtonElement | null>(null);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxSrc, setLightboxSrc] = useState("");
+  const [lightboxAlt, setLightboxAlt] = useState("");
 
   const detailQuery = useQuery({
     queryKey: ["anime-detail", animeId],
@@ -333,6 +337,16 @@ export function AnimeDetailModal({
                   customPosterPath={anime.customPosterPath}
                   defaultPosterPath={anime.defaultPosterPath}
                   defaultPosterUrl={anime.defaultPosterUrl}
+                  onClick={() => {
+                    const sources = posterSourceCandidates({
+                      customPosterPath: anime.customPosterPath,
+                      defaultPosterPath: anime.defaultPosterPath,
+                      defaultPosterUrl: anime.defaultPosterUrl,
+                    });
+                    setLightboxSrc(sources[0] ?? "");
+                    setLightboxAlt(`${title}海报`);
+                    setIsLightboxOpen(true);
+                  }}
                   title={title}
                 />
                 <div className={styles.deferredActions}>
@@ -438,6 +452,14 @@ export function AnimeDetailModal({
           onUpdated={applyPosterUpdate}
           returnFocus={posterTrigger}
           title={title}
+        />
+      ) : null}
+
+      {isLightboxOpen ? (
+        <PosterLightbox
+          alt={lightboxAlt}
+          onClose={() => setIsLightboxOpen(false)}
+          src={lightboxSrc}
         />
       ) : null}
     </>

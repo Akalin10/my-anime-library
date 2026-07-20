@@ -174,6 +174,8 @@ describe("search import interface", () => {
         isImporting: true,
         result: null,
         requestError: null,
+        selectedSources: [],
+        onSourcesChange: () => undefined,
         onStatusChange: () => undefined,
         onClear: () => undefined,
         onImport: () => undefined,
@@ -185,6 +187,8 @@ describe("search import interface", () => {
         status: "WATCHING",
         isImporting: false,
         requestError: null,
+        selectedSources: [],
+        onSourcesChange: () => undefined,
         result: {
           successCount: 1,
           failureCount: 1,

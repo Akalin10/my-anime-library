@@ -43,11 +43,9 @@ echo       Existing .env.local was preserved.
 
 :environment_done
 echo [3/7] Checking project dependencies...
-if not exist "node_modules\.package-lock.json" goto :install_dependencies
+if not exist "node_modules\better-sqlite3\package.json" goto :install_dependencies
 if not exist "package-lock.json" goto :dependencies_ready
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "if ((Get-Item -LiteralPath 'package-lock.json').LastWriteTimeUtc -gt (Get-Item -LiteralPath 'node_modules\.package-lock.json').LastWriteTimeUtc) { exit 1 }"
-if errorlevel 1 goto :install_dependencies
-call npm.cmd ls --depth=0 --silent >nul 2>&1
 if errorlevel 1 goto :install_dependencies
 goto :dependencies_ready
 
@@ -65,8 +63,19 @@ if errorlevel 1 goto :migration_failed
 echo       The database is ready.
 
 echo [5/7] Building the user version of the app...
+if exist ".next\BUILD_ID" goto :build_skip
+goto :build_now
+
+:build_skip
+echo       Build cache found. Skipping build. Use --rebuild to force.
+if /i "%~1"=="--rebuild" goto :build_now
+goto :build_done
+
+:build_now
 call npm.cmd run build
 if errorlevel 1 goto :build_failed
+
+:build_done
 echo       The user version is ready.
 
 echo [6/7] Selecting an available port...

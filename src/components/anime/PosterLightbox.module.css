@@ -1,0 +1,31 @@
+.backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  overflow: hidden;
+  position: fixed;
+  z-index: 200;
+}
+
+@supports (backdrop-filter: blur(16px)) {
+  .backdrop {
+    backdrop-filter: blur(16px);
+    background: rgba(0, 0, 0, 0.48);
+  }
+}
+
+.image {
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+  transform: scale(1);
+  transition: transform 120ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    transition: none;
+  }
+}

@@ -116,7 +116,7 @@ export class AnimeRepository {
 
     if (options.sort === "YEAR") {
       return query
-        .orderBy(sql`${anime.year} is null`, asc(anime.year), asc(anime.id))
+        .orderBy(sql`${anime.year} is null`, desc(anime.year), asc(anime.id))
         .all();
     }
 
